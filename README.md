@@ -1,0 +1,1 @@
+This website is intended for school purposes only. This website is a product of school projects. All the information stated including photos used is not true and is not made to harm others. This is purely for school projects only.
