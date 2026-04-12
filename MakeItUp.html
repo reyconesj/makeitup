@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Make it Up</title>
+
+<style>
+body {font-family:'Segoe UI'; margin:0; background:#fff;}
+
+header {
+display:flex; justify-content:space-between; align-items:center;
+padding:15px 40px; background:white; position:sticky; top:0; z-index:1000;
+}
+
+.logo {font-weight:bold; font-size:22px;}
+
+nav a {
+margin:0 15px;
+text-decoration:none;
+color:black;
+font-weight:600;
+transition:0.3s;
+}
+nav a.active {
+background:#f3a6b1;
+padding:8px 12px;
+border-radius:10px;
+}
+
+.search {border:2px solid black; border-radius:20px; padding:6px 15px; background:#f6cdd2;}
+.icons {font-size:20px; cursor:pointer;}
+
+button, .shop-btn {
+background:#f3a6b1;
+border:none;
+padding:10px 18px;
+border-radius:15px;
+cursor:pointer;
+font-weight:bold;
+}
+button:hover, .shop-btn:hover {opacity:0.8;}
+
+.cart-box {
+display:none;
+position:absolute;
+right:40px;
+top:70px;
+background:white;
+width:260px;
+padding:10px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.3);
+z-index:9999;
+}
+
+.banner {
+background:#f6cdd2;
+padding:40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.banner-left {display:flex; gap:15px;}
+.banner-left img {width:90px; border-radius:10px;}
+
+.products {
+display:flex;
+gap:20px;
+padding:20px 40px;
+flex-wrap:wrap;
+}
+
+.card {
+width:180px;
+background:white;
+padding:10px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+.card img {width:100%; height:140px; object-fit:cover;}
+
+.categories {
+position:fixed;
+right:20px;
+top:320px;
+background:white;
+padding:15px;
+border-radius:15px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+width:200px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.categories p {grid-column:span 2; font-weight:bold;}
+
+.cat-item {text-align:center;}
+.cat-item img {width:100%; height:70px; object-fit:cover; border-radius:10px;}
+
+.auth {
+display:none;
+position:fixed;
+top:30%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.3);
+z-index:9999;
+}
+.auth input, .auth select {width:100%; margin:5px 0; padding:8px;}
+
+.why-grid {
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+max-width:600px;
+margin:auto;
+}
+.why-card {
+background:#f4a7a7;
+padding:12px;
+border-radius:30px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+}
+.why-icon {
+background:#fff;
+width:35px;
+height:35px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">Make it Up 💋</div>
+
+<nav>
+<a href="#" onclick="setActive(this); showHome()">Home</a>
+<a href="#" onclick="setActive(this); showShop()">Shop</a>
+<a href="#" onclick="setActive(this); showAbout()">About</a>
+<a href="#" onclick="setActive(this); showContact()">Contact</a>
+</nav>
+
+<input class="search" placeholder="Search here...">
+
+<div class="icons" onclick="toggleCart()">♡ ♡ 🛒</div>
+
+<button onclick="showLogin()">Login</button>
+<button onclick="showSignup()">Sign Up</button>
+
+<div id="cartBox" class="cart-box">
+<div id="cartItems"></div>
+<strong id="total"></strong><br><br>
+
+<select>
+<option>Cash on Delivery</option>
+<option>GCash</option>
+<option>Maya</option>
+</select>
+
+<br><br>
+
+<div style="display:flex; gap:5px;">
+<button onclick="cancelOrder()">Cancel</button>
+<button onclick="placeOrder()">Place Order</button>
+</div>
+</div>
+</header>
+
+<div id="mainContent">
+
+<div class="banner">
+<div class="banner-left">
+<img src="https://i.pinimg.com/736x/54/90/8a/54908a41a1497200c6588fe5070fbead.jpg">
+<div>
+<h2>Glow & Glam ✨</h2>
+<p>Unleash Your Beauty</p>
+</div>
+</div>
+<button class="shop-btn" onclick="showShop()">SHOP NOW</button>
+</div>
+
+<div id="whySection" style="padding:40px; text-align:center; background:#fff0f3;">
+<h2>Why Choose Us?</h2>
+<div class="why-grid">
+<div class="why-card"><div class="why-icon">👍</div>Premium Quality</div>
+<div class="why-card"><div class="why-icon">🚚</div>Fast Delivery</div>
+<div class="why-card"><div class="why-icon">🛡️</div>Safe Products</div>
+<div class="why-card"><div class="why-icon">💸</div>Affordable</div>
+</div>
+</div>
+
+<div class="products" style="display:none;">
+<div class="card"><img src="https://i.pinimg.com/1200x/fd/ff/fe/fdfffe2cca965c3d87bdbe5ec9029d3f.jpg"><p>Matte Lipstick ₱160</p><button onclick="addToCart('Lipstick',160)">Add</button></div>
+<div class="card"><img src="https://i.pinimg.com/736x/9a/eb/f7/9aebf7b9eb204a5fc1f3433e726cbfcf.jpg"><p>Eyeshadow ₱200</p><button onclick="addToCart('Eyeshadow',200)">Add</button></div>
+<div class="card"><img src="https://i.pinimg.com/736x/01/3e/28/013e2835f34d90e4a3e460c0d4f8923a.jpg"><p>Blush ₱180</p><button onclick="addToCart('Blush',180)">Add</button></div>
+<div class="card"><img src="https://i.pinimg.com/1200x/a5/03/d1/a503d13e2f52b20784a73eea16eb7caf.jpg"><p>Foundation ₱250</p><button onclick="addToCart('Foundation',250)">Add</button></div>
+</div>
+
+<div class="categories" style="display:none;">
+<p>Shop by Category</p>
+<div class="cat-item">Eyes</div>
+<div class="cat-item">Lips</div>
+<div class="cat-item">Face</div>
+<div class="cat-item">Tools</div>
+</div>
+
+</div>
+
+<!-- ABOUT (ORIGINAL) -->
+<div id="aboutSection" style="display:none; padding:40px; line-height:1.6;">
+<h2>About Us 💄</h2>
+<p>At Make It Up Cosmetics, we believe that beauty is a form of self-expression, creativity, and confidence. Our brand was created to empower individuals to embrace their unique features and “make it up” in their own way—whether that means going bold, staying natural, or experimenting with new looks.</p>
+
+<p>We are passionate about offering high-quality, affordable, and trend-inspired makeup products that suit every skin tone and style. From everyday essentials to statement pieces, each product is designed to help you feel confident, beautiful, and unapologetically yourself.</p>
+
+<p>At the heart of Make It Up Cosmetics is a commitment to inclusivity, innovation, and self-love. We don’t just sell makeup—we celebrate individuality and inspire you to create your own definition of beauty.</p>
+
+<p style="font-weight:bold; font-size:20px; margin-top:20px; color:#d63384;">
+✨ Make it yours. Make it bold. Make It Up. ✨
+</p>
+
+<div style="margin-top:25px; padding:15px; border-radius:10px; background:#ffe5e9; border-left:5px solid red;">
+<strong>⚠️ SCHOOL PURPOSE NOTICE:</strong><br><br>
+This website is intended for school purposes only.
+</div>
+</div>
+
+<!-- CONTACT (ORIGINAL) -->
+<div id="contactSection" style="display:none; padding:40px; line-height:1.8;">
+<h2>Contact Us 📞</h2>
+<p>
+📱 Phone: 09213456789<br>
+📧 Email: makeitup@gmail.com<br>
+📍 Location: General Santos City
+</p>
+<p>🌐 Facebook, Instagram & TikTok: @makeitupofficial</p>
+</div>
+
+<!-- LOGIN -->
+<div id="login" class="auth">
+<span onclick="closeAuth()">✖</span>
+<h3>Login</h3>
+<input placeholder="Username">
+<input type="password" placeholder="Password">
+<button onclick="closeAuth()">Login</button>
+</div>
+
+<!-- SIGNUP -->
+<div id="signup" class="auth">
+<span onclick="closeAuth()">✖</span>
+<h3>Sign Up</h3>
+<input placeholder="Username">
+<input type="password" placeholder="Password">
+<select>
+<option>Buyer</option>
+<option>Seller</option>
+</select>
+<button onclick="closeAuth()">Register</button>
+</div>
+
+<script>
+let cart=[];
+
+let mainContent = document.getElementById('mainContent');
+let aboutSection = document.getElementById('aboutSection');
+let contactSection = document.getElementById('contactSection');
+let whySection = document.getElementById('whySection');
+let login = document.getElementById('login');
+let signup = document.getElementById('signup');
+
+function setActive(element){
+document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+element.classList.add('active');
+}
+
+window.onload = function(){
+document.querySelector('nav a').classList.add('active');
+}
+
+function toggleCart(){
+let box=document.getElementById('cartBox');
+box.style.display = box.style.display==='block'?'none':'block';
+renderCart();
+}
+
+function addToCart(name,price){
+let item=cart.find(i=>i.name===name);
+if(item){item.qty++;} else {cart.push({name,price,qty:1});}
+renderCart();
+}
+
+function renderCart(){
+let c=document.getElementById('cartItems');
+c.innerHTML='';
+let total=0;
+cart.forEach(i=>{
+c.innerHTML+=i.name+' x'+i.qty+' ₱'+(i.price*i.qty)+'<br>';
+total+=i.price*i.qty;
+});
+document.getElementById('total').innerHTML='Total ₱'+total;
+}
+
+function cancelOrder(){cart=[]; renderCart();}
+
+function placeOrder(){
+if(cart.length===0){alert('Empty cart'); return;}
+alert('Order placed!');
+cart=[];
+renderCart();
+}
+
+function showHome(){
+mainContent.style.display='block';
+aboutSection.style.display='none';
+contactSection.style.display='none';
+whySection.style.display='block';
+document.querySelector('.products').style.display='none';
+document.querySelector('.categories').style.display='none';
+}
+
+function showShop(){
+showHome();
+whySection.style.display='none';
+document.querySelector('.products').style.display='flex';
+document.querySelector('.categories').style.display='grid';
+}
+
+function showAbout(){
+mainContent.style.display='none';
+aboutSection.style.display='block';
+contactSection.style.display='none';
+}
+
+function showContact(){
+mainContent.style.display='none';
+aboutSection.style.display='none';
+contactSection.style.display='block';
+}
+
+function showLogin(){login.style.display='block'; signup.style.display='none';}
+function showSignup(){signup.style.display='block'; login.style.display='none';}
+function closeAuth(){login.style.display='none'; signup.style.display='none';}
+</script>
+
+</body>
+</html>
