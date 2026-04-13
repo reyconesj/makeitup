@@ -6,29 +6,45 @@
 <title>Make it Up</title>
 
 <style>
+*{box-sizing:border-box;}
 body {font-family:'Segoe UI'; margin:0; background:#fff;}
 
+/* HEADER */
 header {
-display:flex; justify-content:space-between; align-items:center;
-padding:15px 40px; background:white; position:sticky; top:0; z-index:1000;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:white;
+position:sticky;
+top:0;
+z-index:1000;
+flex-wrap:wrap;
+gap:10px;
 }
 
 .logo {font-weight:bold; font-size:22px;}
 
+nav{display:flex; flex-wrap:wrap;}
+
 nav a {
-margin:0 15px;
+margin:5px;
 text-decoration:none;
 color:black;
 font-weight:600;
-transition:0.3s;
-}
-nav a.active {
-background:#f3a6b1;
-padding:8px 12px;
+padding:6px 10px;
 border-radius:10px;
 }
 
-.search {border:2px solid black; border-radius:20px; padding:6px 15px; background:#f6cdd2;}
+nav a.active {background:#f3a6b1;}
+
+.search {
+border:2px solid black; 
+border-radius:20px; 
+padding:6px 15px; 
+background:#f6cdd2;
+}
+
 .icons {font-size:20px; cursor:pointer;}
 
 button, .shop-btn {
@@ -39,13 +55,12 @@ border-radius:15px;
 cursor:pointer;
 font-weight:bold;
 }
-button:hover, .shop-btn:hover {opacity:0.8;}
 
 .cart-box {
 display:none;
 position:absolute;
-right:40px;
-top:70px;
+right:20px;
+top:80px;
 background:white;
 width:260px;
 padding:10px;
@@ -54,22 +69,26 @@ box-shadow:0 4px 10px rgba(0,0,0,0.3);
 z-index:9999;
 }
 
+/* BANNER */
 .banner {
 background:#f6cdd2;
 padding:40px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+flex-wrap:wrap;
 }
 
-.banner-left {display:flex; gap:15px;}
+.banner-left {display:flex; gap:15px; align-items:center;}
 .banner-left img {width:90px; border-radius:10px;}
 
+/* PRODUCTS */
 .products {
 display:flex;
+flex-wrap:wrap;
 gap:20px;
 padding:20px 40px;
-flex-wrap:wrap;
+justify-content:flex-start;
 }
 
 .card {
@@ -79,8 +98,14 @@ padding:10px;
 border-radius:10px;
 box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
-.card img {width:100%; height:140px; object-fit:cover;}
 
+.card img {
+width:100%;
+height:140px;
+object-fit:cover;
+}
+
+/* CATEGORY */
 .categories {
 position:fixed;
 right:20px;
@@ -98,12 +123,18 @@ gap:10px;
 .categories p {grid-column:span 2; font-weight:bold;}
 
 .cat-item {text-align:center;}
-.cat-item img {width:100%; height:70px; object-fit:cover; border-radius:10px;}
+.cat-item img {
+width:100%;
+height:70px;
+object-fit:cover;
+border-radius:10px;
+}
 
+/* AUTH */
 .auth {
 display:none;
 position:fixed;
-top:30%;
+top:50%;
 left:50%;
 transform:translate(-50%,-50%);
 background:white;
@@ -111,9 +142,17 @@ padding:20px;
 border-radius:10px;
 box-shadow:0 4px 10px rgba(0,0,0,0.3);
 z-index:9999;
+width:90%;
+max-width:300px;
 }
-.auth input, .auth select {width:100%; margin:5px 0; padding:8px;}
 
+.auth input, .auth select {
+width:100%;
+margin:5px 0;
+padding:8px;
+}
+
+/* WHY */
 .why-grid {
 display:grid;
 grid-template-columns:repeat(2,1fr);
@@ -121,6 +160,7 @@ gap:15px;
 max-width:600px;
 margin:auto;
 }
+
 .why-card {
 background:#f4a7a7;
 padding:12px;
@@ -130,14 +170,14 @@ align-items:center;
 justify-content:center;
 gap:10px;
 }
-.why-icon {
-background:#fff;
-width:35px;
-height:35px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
+
+/* MOBILE */
+@media (max-width:768px){
+header{flex-direction:column; text-align:center;}
+.products{flex-direction:column; align-items:center;}
+.card{width:90%; max-width:300px;}
+.categories{position:static; width:100%; margin-top:20px;}
+.cart-box{right:5%; width:90%;}
 }
 </style>
 </head>
@@ -156,7 +196,7 @@ justify-content:center;
 
 <input class="search" placeholder="Search here...">
 
-<div class="icons" onclick="toggleCart()">♡ ♡ 🛒</div>
+<div class="icons" onclick="toggleCart()">🛒</div>
 
 <button onclick="showLogin()">Login</button>
 <button onclick="showSignup()">Sign Up</button>
@@ -165,7 +205,7 @@ justify-content:center;
 <div id="cartItems"></div>
 <strong id="total"></strong><br><br>
 
-<select>
+<select id="paymentMethod">
 <option>Cash on Delivery</option>
 <option>GCash</option>
 <option>Maya</option>
@@ -173,10 +213,8 @@ justify-content:center;
 
 <br><br>
 
-<div style="display:flex; gap:5px;">
 <button onclick="cancelOrder()">Cancel</button>
 <button onclick="placeOrder()">Place Order</button>
-</div>
 </div>
 </header>
 
@@ -196,10 +234,10 @@ justify-content:center;
 <div id="whySection" style="padding:40px; text-align:center; background:#fff0f3;">
 <h2>Why Choose Us?</h2>
 <div class="why-grid">
-<div class="why-card"><div class="why-icon">👍</div>Premium Quality</div>
-<div class="why-card"><div class="why-icon">🚚</div>Fast Delivery</div>
-<div class="why-card"><div class="why-icon">🛡️</div>Safe Products</div>
-<div class="why-card"><div class="why-icon">💸</div>Affordable</div>
+<div class="why-card">👍 Premium Quality</div>
+<div class="why-card">🚚 Fast Delivery</div>
+<div class="why-card">🛡️ Safe Products</div>
+<div class="why-card">💸 Affordable</div>
 </div>
 </div>
 
@@ -212,94 +250,90 @@ justify-content:center;
 
 <div class="categories" style="display:none;">
 <p>Shop by Category</p>
-<div class="cat-item">Eyes</div>
-<div class="cat-item">Lips</div>
-<div class="cat-item">Face</div>
-<div class="cat-item">Tools</div>
+<div class="cat-item"><img src="https://i.pinimg.com/736x/9a/eb/f7/9aebf7b9eb204a5fc1f3433e726cbfcf.jpg"><br>Eyes</div>
+<div class="cat-item"><img src="https://i.pinimg.com/1200x/fd/ff/fe/fdfffe2cca965c3d87bdbe5ec9029d3f.jpg"><br>Lips</div>
+<div class="cat-item"><img src="https://i.pinimg.com/736x/01/3e/28/013e2835f34d90e4a3e460c0d4f8923a.jpg"><br>Face</div>
+<div class="cat-item"><img src="https://i.pinimg.com/1200x/a5/03/d1/a503d13e2f52b20784a73eea16eb7caf.jpg"><br>Tools</div>
 </div>
 
 </div>
 
-<!-- ABOUT (ORIGINAL) -->
+<!-- ABOUT (FULL ORIGINAL) -->
 <div id="aboutSection" style="display:none; padding:40px; line-height:1.6;">
 <h2>About Us 💄</h2>
-<p>At Make It Up Cosmetics, we believe that beauty is a form of self-expression, creativity, and confidence. Our brand was created to empower individuals to embrace their unique features and “make it up” in their own way—whether that means going bold, staying natural, or experimenting with new looks.</p>
 
-<p>We are passionate about offering high-quality, affordable, and trend-inspired makeup products that suit every skin tone and style. From everyday essentials to statement pieces, each product is designed to help you feel confident, beautiful, and unapologetically yourself.</p>
+<p>At Make It Up Cosmetics, we believe that beauty is a form of self-expression, creativity, and confidence.</p>
 
-<p>At the heart of Make It Up Cosmetics is a commitment to inclusivity, innovation, and self-love. We don’t just sell makeup—we celebrate individuality and inspire you to create your own definition of beauty.</p>
+<p>Our goal is to empower everyone to explore their beauty in their own unique way. Whether you prefer bold looks or natural styles, our products are designed to fit your personality.</p>
 
-<p style="font-weight:bold; font-size:20px; margin-top:20px; color:#d63384;">
+<p>We offer affordable yet high-quality cosmetics that are safe, trendy, and suitable for all skin types.</p>
+
+<p style="font-weight:bold; color:#d63384;">
 ✨ Make it yours. Make it bold. Make It Up. ✨
 </p>
 
-<div style="margin-top:25px; padding:15px; border-radius:10px; background:#ffe5e9; border-left:5px solid red;">
-<strong>⚠️ SCHOOL PURPOSE NOTICE:</strong><br><br>
-This website is intended for school purposes only.
+<div style="margin-top:20px; background:#ffe5e9; padding:10px; border-left:5px solid red;">
+⚠️ SCHOOL PURPOSE ONLY
 </div>
 </div>
 
-<!-- CONTACT (ORIGINAL) -->
-<div id="contactSection" style="display:none; padding:40px; line-height:1.8;">
+<!-- CONTACT (FULL ORIGINAL) -->
+<div id="contactSection" style="display:none; padding:40px;">
 <h2>Contact Us 📞</h2>
+
 <p>
 📱 Phone: 09213456789<br>
 📧 Email: makeitup@gmail.com<br>
 📍 Location: General Santos City
 </p>
-<p>🌐 Facebook, Instagram & TikTok: @makeitupofficial</p>
+
+<p>
+Follow us on social media:<br>
+Facebook, Instagram, TikTok – @makeitupofficial
+</p>
 </div>
 
 <!-- LOGIN -->
 <div id="login" class="auth">
 <span onclick="closeAuth()">✖</span>
 <h3>Login</h3>
-<input placeholder="Username">
-<input type="password" placeholder="Password">
-<button onclick="closeAuth()">Login</button>
+<input id="loginUser" placeholder="Username">
+<input id="loginPass" type="password" placeholder="Password">
+<button onclick="loginUserFunc()">Login</button>
 </div>
 
 <!-- SIGNUP -->
 <div id="signup" class="auth">
 <span onclick="closeAuth()">✖</span>
 <h3>Sign Up</h3>
-<input placeholder="Username">
-<input type="password" placeholder="Password">
-<select>
+<input id="regUser" placeholder="Username">
+<input id="regPass" type="password" placeholder="Password">
+
+<select id="role">
 <option>Buyer</option>
 <option>Seller</option>
 </select>
-<button onclick="closeAuth()">Register</button>
+
+<button onclick="registerUser()">Register</button>
 </div>
 
 <script>
 let cart=[];
 
-let mainContent = document.getElementById('mainContent');
-let aboutSection = document.getElementById('aboutSection');
-let contactSection = document.getElementById('contactSection');
-let whySection = document.getElementById('whySection');
-let login = document.getElementById('login');
-let signup = document.getElementById('signup');
-
-function setActive(element){
+function setActive(el){
 document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-element.classList.add('active');
-}
-
-window.onload = function(){
-document.querySelector('nav a').classList.add('active');
+el.classList.add('active');
 }
 
 function toggleCart(){
 let box=document.getElementById('cartBox');
-box.style.display = box.style.display==='block'?'none':'block';
+box.style.display=box.style.display==='block'?'none':'block';
 renderCart();
 }
 
-function addToCart(name,price){
-let item=cart.find(i=>i.name===name);
-if(item){item.qty++;} else {cart.push({name,price,qty:1});}
+function addToCart(n,p){
+let item=cart.find(i=>i.name===n);
+if(item)item.qty++; else cart.push({name:n,price:p,qty:1});
 renderCart();
 }
 
@@ -317,19 +351,40 @@ document.getElementById('total').innerHTML='Total ₱'+total;
 function cancelOrder(){cart=[]; renderCart();}
 
 function placeOrder(){
-if(cart.length===0){alert('Empty cart'); return;}
-alert('Order placed!');
+let user=localStorage.getItem("loggedInUser");
+if(!user)return alert("Login first!");
+if(cart.length===0)return alert("Empty cart");
+
+let receipt="🧾 RECEIPT\n\n";
+let total=0;
+
+cart.forEach(item=>{
+let subtotal=item.price*item.qty;
+receipt+=item.name+" x"+item.qty+" = ₱"+subtotal+"\n";
+total+=subtotal;
+});
+
+let method=document.getElementById("paymentMethod").value;
+
+receipt+="\nTotal: ₱"+total;
+receipt+="\nPayment: "+method;
+receipt+="\nCustomer: "+user;
+receipt+="\nDate: "+new Date().toLocaleString();
+receipt+="\n\nThank you for your order 💖";
+
+alert(receipt);
+
 cart=[];
 renderCart();
 }
 
 function showHome(){
 mainContent.style.display='block';
-aboutSection.style.display='none';
-contactSection.style.display='none';
 whySection.style.display='block';
 document.querySelector('.products').style.display='none';
 document.querySelector('.categories').style.display='none';
+aboutSection.style.display='none';
+contactSection.style.display='none';
 }
 
 function showShop(){
@@ -354,6 +409,27 @@ contactSection.style.display='block';
 function showLogin(){login.style.display='block'; signup.style.display='none';}
 function showSignup(){signup.style.display='block'; login.style.display='none';}
 function closeAuth(){login.style.display='none'; signup.style.display='none';}
+
+function registerUser(){
+let u=regUser.value,p=regPass.value,r=role.value;
+let users=JSON.parse(localStorage.getItem("users"))||[];
+if(users.find(x=>x.username===u))return alert("Exists");
+users.push({username:u,password:p,role:r});
+localStorage.setItem("users",JSON.stringify(users));
+alert("Registered"); closeAuth();
+}
+
+function loginUserFunc(){
+let u=loginUser.value;
+let p=loginPass.value;
+let users=JSON.parse(localStorage.getItem("users"))||[];
+let user=users.find(x=>x.username===u&&x.password===p);
+if(user){
+localStorage.setItem("loggedInUser",u);
+alert("Success");
+closeAuth();
+}else alert("Invalid");
+}
 </script>
 
 </body>
